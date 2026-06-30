@@ -1,4 +1,8 @@
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
+
+# 這行指令會讓網頁每 2 秒自動重新抓取一次資料，達成同步效果
+st_autorefresh(interval=2000, key="datarefresh")
 
 # 初始化設定
 if 'votes' not in st.session_state:
@@ -6,13 +10,12 @@ if 'votes' not in st.session_state:
 if 'alive' not in st.session_state:
     st.session_state.alive = {i: True for i in range(1, 13)}
 
-st.title("🐺 狼人殺投票系統 (穩定版)")
+st.title("🐺 狼人殺投票系統 (自動同步版)")
 
 # 法官控制台
 with st.sidebar:
     st.header("法官操作區")
     for i in range(1, 13):
-        # 只要法官點選，就會自動更新狀態
         st.session_state.alive[i] = st.checkbox(f"{i}號 玩家", value=st.session_state.alive[i])
     
     if st.button("清除本輪投票"):
